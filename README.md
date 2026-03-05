@@ -140,6 +140,27 @@ integration:
 - **Operating Systems**: Windows 10+, macOS 10.15+, Linux (Ubuntu 20.04+, CentOS 8+, etc.)
 - **Dependencies**: Pure Python, no platform-specific binaries
 
+### Installation Methods
+
+#### **Method 1: Install from GitHub (Recommended)**
+```bash
+pip install git+https://github.com/kric030214-web/AetherMem.git
+```
+
+#### **Method 2: Clone and Install (Development)**
+```bash
+git clone https://github.com/kric030214-web/AetherMem.git
+cd AetherMem
+pip install -e .
+```
+
+#### **Method 3: Install from Local Build**
+```bash
+# After cloning
+cd AetherMem
+pip install .
+```
+
 ### Platform-Specific Setup
 
 #### **Linux/macOS**
@@ -152,17 +173,17 @@ sudo apt update && sudo apt install python3 python3-pip
 brew install python
 
 # Install AetherMem
-pip install aethermem
+pip install git+https://github.com/kric030214-web/AetherMem.git
 ```
 
 #### **Windows**
 ```powershell
 # Install Python 3.8+ from python.org
 # Then install AetherMem
-pip install aethermem
+pip install git+https://github.com/kric030214-web/AetherMem.git
 
 # Or using PowerShell with admin rights:
-python -m pip install aethermem
+python -m pip install git+https://github.com/kric030214-web/AetherMem.git
 ```
 
 #### **All Platforms (Development Install)**
@@ -172,20 +193,12 @@ cd AetherMem
 pip install -e .
 ```
 
-### Installation
-```bash
-pip install aethermem
-```
-
 ### Basic Protocol Initialization
 ```python
 from aethermem import ContinuityProtocol
 
 # Initialize protocol with configuration
 protocol = ContinuityProtocol(config_path="config/protocol.yaml")
-
-# Restore context across session boundary
-context = protocol.restore_context(entity_id="agent_001")
 print(f"Restored {len(context)} bytes of protocol state")
 
 # Persist state with weighted indexing

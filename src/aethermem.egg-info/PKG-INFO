@@ -1,11 +1,11 @@
-Metadata-Version: 2.1
+Metadata-Version: 2.4
 Name: aethermem
 Version: 1.0.0
 Summary: A high-resilience memory continuity protocol for AI Agents
 Author: AetherMem Authors
 Author-email: AetherMem Authors <contact@aethermem.dev>
 Maintainer-email: AetherMem Core Team <core@aethermem.dev>
-License: MIT
+License: AGPL-3.0-or-later
 Project-URL: Homepage, https://github.com/kric030214-web/AetherMem
 Project-URL: Documentation, https://github.com/kric030214-web/AetherMem
 Project-URL: Repository, https://github.com/kric030214-web/AetherMem
@@ -28,20 +28,44 @@ Classifier: Topic :: System :: Filesystems
 Classifier: Topic :: Software Development :: Libraries :: Python Modules
 Requires-Python: >=3.8
 Description-Content-Type: text/markdown
-Provides-Extra: dev
-Provides-Extra: docs
-Provides-Extra: emotional
-Provides-Extra: openclaw
 License-File: LICENSE
+Requires-Dist: numpy>=1.20.0
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: python-dateutil>=2.8.2
+Requires-Dist: filelock>=3.4.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=3.0.0; extra == "dev"
+Requires-Dist: black>=22.0.0; extra == "dev"
+Requires-Dist: flake8>=4.0.0; extra == "dev"
+Requires-Dist: isort>=5.10.0; extra == "dev"
+Requires-Dist: mypy>=0.910; extra == "dev"
+Requires-Dist: pre-commit>=2.17.0; extra == "dev"
+Requires-Dist: twine>=3.7.0; extra == "dev"
+Requires-Dist: build>=0.7.0; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: sphinx>=4.3.0; extra == "docs"
+Requires-Dist: sphinx-rtd-theme>=1.0.0; extra == "docs"
+Provides-Extra: emotional
+Requires-Dist: scikit-learn>=1.0.0; extra == "emotional"
+Requires-Dist: transformers>=4.15.0; extra == "emotional"
+Requires-Dist: sentence-transformers>=2.2.0; extra == "emotional"
+Provides-Extra: openclaw
+Requires-Dist: openclaw>=2026.3.0; extra == "openclaw"
+Dynamic: author
+Dynamic: license-file
+Dynamic: requires-python
 
 # ARCH: AetherMem (Continuity Protocol v1.0)
 Project Identifier: AETHERMEM-CORE-S1
 
-Target Environment: OpenClaw Runtime / OpenCloudOS / systemd-sandboxed
+Target Environment: Python 3.8+ (Windows, macOS, Linux)
+Compatible with: OpenClaw Runtime, any Python 3.8+ environment
 
-License: MIT_SOURCE_SPEC
+License: AGPL-3.0-or-later
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![OpenClaw Compatible](https://img.shields.io/badge/OpenClaw-Compatible-green.svg)](https://openclaw.ai)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/kric030214-web/AetherMem/actions)
@@ -52,7 +76,7 @@ AetherMem is a persistence cognition protocol designed for distributed AI Agent 
 
 ### Technical Metrics
 - **Persistence Type**: Vectorized State Mapping
-- **Transport**: D-Bus Session Bus (User-scoped)
+- **Platform Support**: Windows, macOS, Linux (Python 3.8+)
 - **Encryption**: AES-256-GCM (Optional)
 - **Latency**: <15ms (Local Retrieval)
 - **Throughput**: 1000+ operations/second (Single Core)
@@ -170,6 +194,43 @@ integration:
 
 ## 0x06 Installation and Usage
 
+### Platform Requirements
+- **Python**: 3.8 or higher
+- **Operating Systems**: Windows 10+, macOS 10.15+, Linux (Ubuntu 20.04+, CentOS 8+, etc.)
+- **Dependencies**: Pure Python, no platform-specific binaries
+
+### Platform-Specific Setup
+
+#### **Linux/macOS**
+```bash
+# Install Python 3.8+ if not already installed
+# Ubuntu/Debian:
+sudo apt update && sudo apt install python3 python3-pip
+
+# macOS (with Homebrew):
+brew install python
+
+# Install AetherMem
+pip install aethermem
+```
+
+#### **Windows**
+```powershell
+# Install Python 3.8+ from python.org
+# Then install AetherMem
+pip install aethermem
+
+# Or using PowerShell with admin rights:
+python -m pip install aethermem
+```
+
+#### **All Platforms (Development Install)**
+```bash
+git clone https://github.com/kric030214-web/AetherMem.git
+cd AetherMem
+pip install -e .
+```
+
 ### Installation
 ```bash
 pip install aethermem
@@ -204,7 +265,7 @@ weighted_context = protocol.get_weighted_context(
 
 ### Building from Source
 ```bash
-git clone https://github.com/yourusername/aethermem.git
+git clone https://github.com/kric030214-web/AetherMem.git
 cd aethermem
 pip install -e .[dev]
 ```
@@ -222,8 +283,25 @@ flake8 src/ tests/ examples/
 mypy src/
 ```
 
-## 0x08 License
-AetherMem is released under the MIT License. See [LICENSE](LICENSE) for details.
+## 0x08 License and Commercial Use
+
+### Open Source License
+AetherMem is released under the **GNU Affero General Public License v3.0 (AGPL-3.0)**.
+- ✅ **Free to use** for personal, educational, and research purposes
+- ✅ **Free to modify** and distribute modifications (must remain under AGPL)
+- ✅ **Free to use** in open source projects
+- ⚠️ **Modifications must be open source** under AGPL (copyleft)
+- ⚠️ **Network services** using AetherMem must provide source code to users
+
+See [LICENSE](LICENSE) for full terms.
+
+### Commercial Licensing
+For commercial use, SaaS applications, or proprietary integrations that cannot comply with AGPL requirements, commercial licenses are available.
+
+**Contact for commercial licensing:** kric030214-web (GitHub)
+
+### Why AGPL?
+AGPL ensures that improvements to AetherMem remain open and available to the community, while allowing commercial use with appropriate licensing. This protects the open source ecosystem while supporting sustainable development.
 
 ## 0x09 Support
 Primary Repository: https://github.com/kric030214-web/AetherMem
