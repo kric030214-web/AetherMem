@@ -1,349 +1,137 @@
-# ARCH: AetherMem (Continuity Protocol v1.0)
-Project Identifier: AETHERMEM-CORE-S1
+# AetherMem - Digital Life Memory System
 
-Target Environment: Python 3.8+ (Windows, macOS, Linux)
-Compatible with: OpenClaw Runtime, any Python 3.8+ environment
+🚀 **AetherMem v1.0 正式发布！**
 
-License: AGPL-3.0-or-later
+你的AI Agent是否总是在重启后"忘记"一切？
+AetherMem解决了这个根本问题。
 
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![OpenClaw Compatible](https://img.shields.io/badge/OpenClaw-Compatible-green.svg)](https://openclaw.ai)
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/kric030214-web/AetherMem/actions)
-[![Code Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen.svg)](https://github.com/kric030214-web/AetherMem/actions)
+## ✨ 核心特性
+- ✅ **跨会话记忆连续性** - 打破会话边界
+- ✅ **共振加权索引** - 基于时间衰减的情感智能
+- ✅ **VWL虚拟写层** - 在只读环境中启用写操作
+- ✅ **原子同步协议** - 确保记忆一致性
+- ✅ **完整OpenClaw集成** - 无缝对接AI Agent生态
 
-## 0x01 System Specification
-AetherMem is a persistence cognition protocol designed for distributed AI Agent architectures. Its primary objective is to eliminate the fracture between non-volatile storage and runtime context. Utilizing the VWL (Virtual Write Layer), it enforces data alignment and state synchronization across discrete sessions.
+## 🚀 快速开始
 
-### Technical Metrics
-- **Persistence Type**: Vectorized State Mapping
-- **Platform Support**: Windows, macOS, Linux (Python 3.8+)
-- **Encryption**: AES-256-GCM (Optional)
-- **Latency**: <15ms (Local Retrieval)
-- **Throughput**: 1000+ operations/second (Single Core)
-- **Memory Footprint**: <50MB (Base Configuration)
-
-## 0x02 Architecture
-The system consists of three modular layers interfacing via the D-Bus bus for low-latency primitive exchange:
-
-1. **VWL (Virtual Write Layer)**: Circumvents filesystem write restrictions within namespace sandboxes.
-2. **Resonance Hub**: A weighted indexing engine utilizing temporal decay functions and interaction frequency.
-3. **Linger Daemon**: A persistent background process integrated with systemctl --user to maintain lifecycle integrity.
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Application Interface                     │
-├─────────────────────────────────────────────────────────────┤
-│  Context Injector │  State Persistor   │  Resonance Engine   │
-└──────────┬───────┴────────┬────────────┴──────────┬─────────┘
-           │                 │                       │
-┌──────────▼─────────────────▼───────────────────────▼────────┐
-│                VWL Core (Virtual Write Layer)               │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │  Memory Mapping  │  Sync Primitive  │  Cache Control │  │
-│  └──────────┬───────┴────────┬─────────┴────────┬───────┘  │
-└─────────────┼────────────────┼───────────────────┼──────────┘
-              │                │                   │
-┌─────────────▼────────────────▼───────────────────▼──────────┐
-│          D-Bus          │    Memory Space      │  Storage   │
-│     (IPC Transport)     │   (Virtual Cache)    │ (Persist)  │
-└─────────────────────────┴──────────────────────┴────────────┘
-```
-
-## 0x03 Core Capabilities
-
-### VWL (Virtual Write Layer)
-Filesystem abstraction enabling write operations in read-only environments through memory-mapped persistence. Implements atomic sync operations with configurable consistency guarantees.
-
-### Resonance Engine
-Weighted indexing system utilizing temporal decay functions (λ = 0.1/day) and interaction frequency metrics for context prioritization.
-
-### State Arbitration Protocol
-Multi-factor scoring algorithm: Priority = Importance × Recency × Resonance. Implements LRU eviction with configurable retention policies.
-
-### Session Boundary Transparency
-Automatic context restoration across process boundaries with configurable injection thresholds and memory limits.
-
-## 0x04 Implementation Architecture
-
-```
-aethermem/
-├── src/
-│   ├── core/                    # Protocol implementations
-│   │   ├── vwl_layer.py         # Virtual Write Layer (atomic operations)
-│   │   ├── context_injector.py  # Boundary crossing context restoration
-│   │   └── state_persistor.py   # Weighted persistence with decay functions
-│   ├── api/                     # Public protocol interface
-│   │   ├── __init__.py          # Primary export definitions
-│   │   ├── continuity_protocol.py # Unified protocol interface
-│   │   └── types.py             # Type definitions and protocol specs
-│   ├── resonance/               # Weighted indexing engine
-│   │   ├── temporal_decay.py    # Time-based weight calculations
-│   │   └── interaction_metrics.py # Frequency and recency analysis
-│   └── integration/             # Platform-specific implementations
-│       ├── openclaw/            # OpenClaw runtime integration
-│       │   ├── adapter.py       # Runtime-specific adapter
-│       │   └── skill_registry.py # Protocol registration utilities
-│       ├── autogen/             # (Template) AutoGen protocol adapter
-│       └── config_validator.py  # Configuration schema validation
-├── config/
-│   ├── protocol.example.yaml    # Production protocol configuration
-│   └── schemas/                 # Protocol validation schemas
-├── examples/
-│   ├── basic_protocol.py        # Minimal protocol implementation
-│   ├── resonance_usage.py       # Weighted indexing demonstration
-│   └── custom_adapter.py        # Custom protocol adapter template
-├── tests/
-│   ├── unit/
-│   │   ├── test_vwl_atomics.py  # VWL atomic operation tests
-│   │   └── test_temporal_decay.py # Time decay function validation
-│   └── integration/
-│       ├── test_openclaw_integration.py
-│       └── test_boundary_crossing.py
-└── docs/
-    ├── PROTOCOL_SPECIFICATION.md # Technical protocol specification
-    ├── VWL_IMPLEMENTATION.md    # VWL layer implementation details
-    └── RESONANCE_ALGORITHMS.md  # Weighted indexing algorithms
-```
-
-## 0x05 Protocol Configuration
-
-```yaml
-# config/protocol.example.yaml
-protocol:
-  version: "1.0"
-  environment: "production"
-  
-vwl:
-  enabled: true
-  sync_interval: 300  # Atomic sync interval in seconds
-  max_virtual_size: 1048576  # Maximum virtual memory in bytes
-  consistency: "eventual"  # eventual, strong, atomic
-  
-resonance:
-  decay_rate: 0.1  # Temporal decay constant (per day)
-  weight_factors:
-    importance: 0.4
-    recency: 0.3
-    frequency: 0.3
-    
-integration:
-  openclaw:
-    runtime_path: "${OPENCLAW_RUNTIME}"
-    auto_register: true
-```
-
-## 0x06 Installation and Usage
-
-### Platform Requirements
-- **Python**: 3.8 or higher
-- **Operating Systems**: Windows 10+, macOS 10.15+, Linux (Ubuntu 20.04+, CentOS 8+, etc.)
-- **Dependencies**: Pure Python, no platform-specific binaries
-
-### Installation Methods
-
-#### **Method 1: Install from GitHub (Recommended)**
+### 安装
 ```bash
 pip install git+https://github.com/kric030214-web/AetherMem.git
 ```
 
-#### **Method 2: Clone and Install (Development)**
-```bash
-git clone https://github.com/kric030214-web/AetherMem.git
-cd AetherMem
-pip install -e .
-```
-
-#### **Method 3: Install from Local Build**
-```bash
-# After cloning
-cd AetherMem
-pip install .
-```
-
-### Platform-Specific Setup
-
-#### **Linux/macOS**
-```bash
-# Install Python 3.8+ if not already installed
-# Ubuntu/Debian:
-sudo apt update && sudo apt install python3 python3-pip
-
-# macOS (with Homebrew):
-brew install python
-
-# Install AetherMem
-pip install git+https://github.com/kric030214-web/AetherMem.git
-```
-
-#### **Windows**
-```powershell
-# Install Python 3.8+ from python.org
-# Then install AetherMem
-pip install git+https://github.com/kric030214-web/AetherMem.git
-
-# Or using PowerShell with admin rights:
-python -m pip install git+https://github.com/kric030214-web/AetherMem.git
-```
-
-#### **All Platforms (Development Install)**
-```bash
-git clone https://github.com/kric030214-web/AetherMem.git
-cd AetherMem
-pip install -e .
-```
-
-### Basic Protocol Initialization
+### 基础使用
 ```python
 from aethermem import ContinuityProtocol
 
-# Initialize protocol with configuration
-protocol = ContinuityProtocol(config_path="config/protocol.yaml")
-print(f"Restored {len(context)} bytes of protocol state")
+# 初始化协议
+protocol = ContinuityProtocol()
 
-# Persist state with weighted indexing
+# 恢复跨会话上下文
+context = protocol.restore_context("your_agent")
+print(f"恢复 {len(context)} 字节的协议状态")
+
+# 持久化重要对话
 result = protocol.persist_state(
-    state_vector=state_data,
-    importance=2,
-    metadata={"session_id": "sess_123"}
+    state_vector={
+        "user_message": "I just had a breakthrough!",
+        "assistant_response": "That's amazing! Tell me more."
+    },
+    importance=3,
+    metadata={"session_id": "sess_123", "platform": "test"}
 )
 
-# Retrieve resonance-weighted context
-weighted_context = protocol.get_weighted_context(
-    entity_id="agent_001",
-    max_bytes=20000
-)
+# 计算共振值（情感权重）
+resonance = protocol.calculate_resonance("This is an important achievement!")
+print(f"共振值: {resonance:.2f}")  # 0.90 for "important achievement"
 ```
 
-## 0x07 Development
+## 📊 技术指标
+- **检索延迟**: <15ms (本地)
+- **吞吐量**: 1000+ 操作/秒 (单核)
+- **内存占用**: <50MB (基础配置)
+- **平台支持**: Windows 10+, macOS 10.15+, Linux
+- **Python版本**: ≥3.8
+- **许可证**: AGPL-3.0-or-later
 
-### Building from Source
+## 🏗️ 架构概述
+
+AetherMem采用三层架构：
+
+1. **虚拟写层(VWL)** - 文件系统抽象，支持只读环境
+2. **共振引擎** - 时间衰减(λ=0.1/天) + 交互频率加权索引
+3. **连续性协议** - 统一API接口，支持跨平台
+
+```
+┌─────────────────────────────────────────────┐
+│            Continuity Protocol              │
+├─────────────────────────────────────────────┤
+│  Context Restore │ State Persist │ Resonance│
+└──────────┬───────┴──────┬────────┴─────┬────┘
+           │              │               │
+┌──────────▼──────────────▼───────────────▼────┐
+│              Resonance Engine                │
+│  ┌────────────────────────────────────────┐  │
+│  │ Temporal Decay │ Interaction Metrics   │  │
+│  └──────────┬─────┴──────────┬────────────┘  │
+└─────────────┼────────────────┼────────────────┘
+              │                │
+┌─────────────▼────────────────▼────────────────┐
+│            Virtual Write Layer                │
+│  ┌────────────────────────────────────────┐  │
+│  │ Memory Mapping │ Atomic Sync │ Cache   │  │
+│  └────────────────────────────────────────┘  │
+└──────────────────────────────────────────────┘
+```
+
+## 📁 项目结构
+```
+AetherMem/
+├── config/              # 配置文件
+├── docs/               # 文档
+├── examples/           # 示例代码
+├── releases/           # 发布文件
+├── scripts/            # 工具脚本
+├── src/aethermem/      # 源代码
+├── tests/              # 测试代码
+├── LICENSE            # AGPL-3.0许可证
+├── README.md          # 本文档
+├── pyproject.toml     # 项目配置
+├── requirements.txt   # 依赖列表
+└── setup.py           # 安装脚本
+```
+
+## 🔧 开发安装
 ```bash
 git clone https://github.com/kric030214-web/AetherMem.git
-cd aethermem
+cd AetherMem
 pip install -e .[dev]
 ```
 
-### Running Tests
+## 🧪 运行测试
 ```bash
 pytest tests/ -v --cov=src --cov-report=html
 ```
 
-### Code Quality
-```bash
-black src/ tests/ examples/
-isort src/ tests/ examples/
-flake8 src/ tests/ examples/
-mypy src/
-```
+## 📚 完整文档
+查看 `docs/` 目录获取：
+- 架构详细说明 (`docs/architecture/`)
+- API参考文档
+- 配置指南
+- 贡献指南
 
-## 0x08 License and Commercial Use
+## 👥 贡献
+欢迎提交Issue和Pull Request！请先阅读：
+- `docs/CONTRIBUTING.md` - 贡献指南
+- `docs/CODE_OF_CONDUCT.md` - 行为准则
 
-### Open Source License
-AetherMem is released under the **GNU Affero General Public License v3.0 (AGPL-3.0)**.
-- ✅ **Free to use** for personal, educational, and research purposes
-- ✅ **Free to modify** and distribute modifications (must remain under AGPL)
-- ✅ **Free to use** in open source projects
-- ⚠️ **Modifications must be open source** under AGPL (copyleft)
-- ⚠️ **Network services** using AetherMem must provide source code to users
+## 📄 许可证
+AGPL-3.0-or-later - 详见 [LICENSE](LICENSE) 文件。
 
-See [LICENSE](LICENSE) for full terms.
+## 🔗 链接
+- **GitHub仓库**: https://github.com/kric030214-web/AetherMem
+- **问题追踪**: https://github.com/kric030214-web/AetherMem/issues
+- **协议文档**: 包含完整技术规范
 
-### Commercial Licensing
-For commercial use, SaaS applications, or proprietary integrations that cannot comply with AGPL requirements, commercial licenses are available.
+---
 
-**Contact for commercial licensing:** kric030214-web (GitHub)
-
-### Why AGPL?
-AGPL ensures that improvements to AetherMem remain open and available to the community, while allowing commercial use with appropriate licensing. This protects the open source ecosystem while supporting sustainable development.
-
-## 0x09 Support
-Primary Repository: https://github.com/kric030214-web/AetherMem
-
-Issue Tracking: https://github.com/kric030214-web/AetherMem/issues
-
-Protocol Documentation: https://github.com/kric030214-web/AetherMem
-
-## 0x0A Acknowledgments
-- OpenClaw Runtime Team for integration support
-- D-Bus specification maintainers
-- Systemd namespace sandbox developers## 0x06 Installation and Usage
-
-### Platform Requirements
-- **Python**: 3.8 or higher
-- **Operating Systems**: Windows 10+, macOS 10.15+, Linux (Ubuntu 20.04+, CentOS 8+, etc.)
-- **Dependencies**: Pure Python, no platform-specific binaries
-
-### Installation Methods
-
-#### **Method 1: Install from GitHub (Recommended)**
-```bash
-pip install git+https://github.com/kric030214-web/AetherMem.git
-```
-
-#### **Method 2: Clone and Install (Development)**
-```bash
-git clone https://github.com/kric030214-web/AetherMem.git
-cd AetherMem
-pip install -e .
-```
-
-#### **Method 3: Install from Local Build**
-```bash
-# After cloning
-cd AetherMem
-pip install .
-```
-
-### Platform-Specific Setup
-
-#### **Linux/macOS**
-```bash
-# Install Python 3.8+ if not already installed
-# Ubuntu/Debian:
-sudo apt update && sudo apt install python3 python3-pip
-
-# macOS (with Homebrew):
-brew install python
-
-# Install AetherMem
-pip install git+https://github.com/kric030214-web/AetherMem.git
-```
-
-#### **Windows**
-```powershell
-# Install Python 3.8+ from python.org
-# Then install AetherMem
-pip install git+https://github.com/kric030214-web/AetherMem.git
-
-# Or using PowerShell with admin rights:
-python -m pip install git+https://github.com/kric030214-web/AetherMem.git
-```
-
-#### **All Platforms (Development Install)**
-```bash
-git clone https://github.com/kric030214-web/AetherMem.git
-cd AetherMem
-pip install -e .
-```
-
-### Basic Protocol Initialization
-```python
-from aethermem import ContinuityProtocol
-
-# Initialize protocol with configuration
-protocol = ContinuityProtocol(config_path="config/protocol.yaml")
-print(f"Restored {len(context)} bytes of protocol state")
-
-# Persist state with weighted indexing
-result = protocol.persist_state(
-    state_vector=state_data,
-    importance=2,
-    metadata={"session_id": "sess_123"}
-)
-
-# Retrieve resonance-weighted context
-weighted_context = protocol.get_weighted_context(
-    entity_id="agent_001",
-    max_bytes=20000
-)
+*让AI Agent拥有持久的记忆，构建真正的数字生命。*
