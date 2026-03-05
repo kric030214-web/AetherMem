@@ -1,0 +1,5 @@
+[console_scripts]
+aethermem = aethermem.cli:main
+
+[openclaw.skills]
+aethermem = aethermem.integration.openclaw:register_skill

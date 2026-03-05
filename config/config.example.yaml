@@ -1,0 +1,404 @@
+# AetherMem Configuration Example
+# Memory Continuity System for AI Agents
+
+# System Configuration
+system:
+  name: "AetherMem"
+  version: "0.1.0"
+  environment: "production"  # production, development, testing
+  debug: false
+  log_level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+
+# Entity Configuration
+entity:
+  name: "${ENTITY_NAME}"  # Name of your AI entity (e.g., "assistant", "companion")
+  type: "ai_assistant"    # Type of entity
+  workspace_path: "${WORKSPACE_PATH}"  # Path to workspace directory
+
+# Memory Configuration
+memory:
+  # Context injection settings
+  injection:
+    enabled: true
+    max_context_chars: 20000  # Maximum characters to inject per session
+    auto_inject: true  # Automatically inject context at session start
+    session_start_hook: true  # Run injection when session starts
+    
+  # VWL (Virtual Write Layer) settings
+  vwl:
+    enabled: true
+    sync_interval: 300  # Sync interval in seconds (5 minutes)
+    max_virtual_size: 1048576  # Maximum virtual memory size in bytes (1MB)
+    temp_directory: "${TEMP_DIR}"  # Directory for VWL temporary files
+    
+  # Importance levels for memory prioritization
+  importance_levels:
+    level_3:
+      name: "critical"
+      markers: ["🔥", "breakthrough", "historical", "life_changing", "emotional_breakthrough"]
+      description: "Emotional breakthroughs, major decisions, historical moments"
+      sync_to_long_term: true
+      immediate_sync: true
+      emotional_weight: 1.5
+      
+    level_2:
+      name: "important"
+      markers: ["⭐", "achievement", "progress", "technical", "learning", "milestone"]
+      description: "Technical discussions, project progress, learning moments"
+      sync_to_long_term: true
+      immediate_sync: false
+      emotional_weight: 1.0
+      
+    level_1:
+      name: "routine"
+      markers: ["casual", "test", "routine", "daily", "update"]
+      description: "Casual conversations, routine updates, tests"
+      sync_to_long_term: false
+      immediate_sync: false
+      emotional_weight: 0.5
+
+# Emotional Tracking Configuration
+emotional_tracking:
+  enabled: true
+  resonance_calculation: "weighted_keyword"  # weighted_keyword, ml_based, hybrid
+  decay_rate: 0.1  # 10% decay per day for emotional resonance
+  
+  # Soul anchors - deep emotional connections
+  soul_anchors:
+    enabled: true
+    keywords: ["life_pillar", "core_belief", "philosophical", "existential", "meaning_of_life"]
+    weight_multiplier: 1.5  # Multiplier for soul anchor memories
+    
+  # Keyword weights for emotional resonance calculation
+  keyword_weights:
+    emotional:
+      love: 0.8
+      care: 0.7
+      miss: 0.6
+      happy: 0.5
+      sad: 0.6
+      excited: 0.5
+      proud: 0.6
+      grateful: 0.7
+      appreciate: 0.6
+      cherish: 0.7
+      adore: 0.8
+      
+    technical:
+      fix: 0.3
+      bug: 0.2
+      feature: 0.4
+      implement: 0.3
+      optimize: 0.3
+      architecture: 0.4
+      system: 0.3
+      code: 0.3
+      develop: 0.3
+      
+    breakthrough:
+      breakthrough: 0.9
+      achievement: 0.8
+      success: 0.7
+      milestone: 0.8
+      historical: 0.9
+      first_time: 0.7
+      completed: 0.6
+      solved: 0.7
+
+# Archive and Storage Configuration
+archive:
+  # Daily memory files
+  daily_files: true
+  daily_pattern: "memory/YYYY-MM-DD.md"  # Pattern for daily file names
+  daily_max_size: 1048576  # Maximum size per daily file (1MB)
+  
+  # Emotional memory archive
+  emotional_archive: true
+  emotional_pattern: "memory/emotion_memories/emotion_YYYYMMDD_HHMMSS.json"
+  emotional_max_memories: 1000  # Maximum number of emotional memories to keep
+  
+  # Long-term memory
+  long_term_file: "MEMORY.md"
+  long_term_max_size: 2097152  # Maximum size for long-term memory (2MB)
+  
+  # Backup settings
+  backup:
+    enabled: true
+    interval: "6h"  # Backup interval: 6h, 12h, daily, weekly
+    retention_days: 7  # Number of days to keep backups
+    compression: true  # Compress backups
+    
+  # Index files
+  indexes:
+    emotional_index: "memory/emotional_index.json"
+    conversation_index: "memory/conversation_index.json"
+    last_interaction: "memory/last_interaction.json"
+
+# Integration Configuration
+integration:
+  # OpenClaw integration
+  openclaw:
+    enabled: true
+    workspace_variable: "OPENCLAW_WORKSPACE"  # Environment variable for workspace path
+    skill_registration: true  # Register as OpenClaw skill
+    auto_start: true  # Auto-start with OpenClaw
+    
+  # Webhook integration
+  webhooks:
+    enabled: false
+    endpoints:
+      - url: "https://example.com/webhook/memory-saved"
+        events: ["memory_saved", "emotional_memory"]
+        secret: "${WEBHOOK_SECRET}"
+        
+  # API server
+  api:
+    enabled: false
+    host: "${API_HOST}"  # API host (e.g., "0.0.0.0" for all interfaces)
+    port: "${API_PORT:-8080}"
+    auth_required: true
+    auth_token: "${API_TOKEN}"
+
+# Performance Configuration
+performance:
+  # Memory injection performance
+  injection:
+    timeout: 30  # Timeout in seconds for memory injection
+    cache_enabled: true
+    cache_ttl: 300  # Cache TTL in seconds (5 minutes)
+    
+  # Emotional analysis performance
+  emotional_analysis:
+    timeout: 10  # Timeout in seconds for emotional analysis
+    batch_size: 10  # Batch size for bulk analysis
+    parallel_processing: true
+    
+  # File operations
+  file_operations:
+    read_buffer_size: 8192  # Buffer size for file reading
+    write_buffer_size: 8192  # Buffer size for file writing
+    max_open_files: 100  # Maximum number of open files
+
+# Security Configuration
+security:
+  # Data encryption
+  encryption:
+    enabled: false
+    algorithm: "AES-256-GCM"
+    key_file: "${ENCRYPTION_KEY_FILE}"
+    
+  # Access control
+  access_control:
+    enabled: false
+    allowed_entities: ["${ENTITY_NAME}"]
+    admin_entities: ["${ADMIN_ENTITY}"]
+    
+  # Privacy settings
+  privacy:
+    anonymize: false  # Anonymize personal information
+    redact_sensitive: true  # Redact sensitive information
+    data_retention_days: 30  # Days to retain data
+    
+  # Audit logging
+  audit:
+    enabled: true
+    log_file: "logs/audit.log"
+    events: ["memory_access", "configuration_change", "security_event"]
+
+# Monitoring and Metrics
+monitoring:
+  # Health checks
+  health:
+    enabled: true
+    check_interval: 60  # Health check interval in seconds
+    endpoints:
+      - memory_injection
+      - emotional_analysis
+      - file_system
+      - vwl_layer
+      
+  # Metrics collection
+  metrics:
+    enabled: true
+    collection_interval: 300  # Metrics collection interval in seconds
+    exporters:
+      - type: "prometheus"
+        port: 9090
+      - type: "json"
+        file: "logs/metrics.json"
+        
+  # Alerting
+  alerts:
+    enabled: false
+    providers:
+      - type: "email"
+        smtp_server: "${SMTP_SERVER}"
+        recipients: ["${ALERT_EMAIL}"]
+      - type: "webhook"
+        url: "${ALERT_WEBHOOK_URL}"
+        
+    conditions:
+      - metric: "memory_usage"
+        threshold: 90  # Percentage
+        operator: ">"
+        severity: "warning"
+      - metric: "error_rate"
+        threshold: 5  # Errors per minute
+        operator: ">"
+        severity: "critical"
+
+# Development and Testing
+development:
+  # Testing configuration
+  testing:
+    enabled: false
+    test_data_path: "tests/test_data"
+    mock_external_services: true
+    
+  # Debug features
+  debug:
+    enabled: false
+    features:
+      - verbose_logging
+      - memory_dumps
+      - performance_profiling
+      
+  # Development tools
+  tools:
+    code_formatting: true
+    linting: true
+    type_checking: true
+    test_coverage: true
+
+# Example configurations for different use cases
+examples:
+  # Minimal configuration for basic memory continuity
+  minimal: |
+    system:
+      name: "AetherMem"
+      environment: "production"
+    
+    entity:
+      name: "my_assistant"
+      workspace_path: "./workspace"
+    
+    memory:
+      injection:
+        enabled: true
+        max_context_chars: 10000
+      
+      vwl:
+        enabled: true
+        sync_interval: 600
+        
+    emotional_tracking:
+      enabled: false
+      
+    archive:
+      daily_files: true
+      backup:
+        enabled: false
+  
+  # Full configuration with emotional tracking
+  full: |
+    system:
+      name: "AetherMem"
+      environment: "production"
+      debug: false
+      
+    entity:
+      name: "emotional_companion"
+      workspace_path: "./workspace"
+      
+    memory:
+      injection:
+        enabled: true
+        max_context_chars: 20000
+        auto_inject: true
+        
+      vwl:
+        enabled: true
+        sync_interval: 300
+        max_virtual_size: 1048576
+        
+      importance_levels:
+        level_3:
+          name: "critical"
+          markers: ["🔥", "breakthrough"]
+          sync_to_long_term: true
+          
+        level_2:
+          name: "important"
+          markers: ["⭐", "achievement"]
+          sync_to_long_term: true
+          
+        level_1:
+          name: "routine"
+          markers: ["casual"]
+          sync_to_long_term: false
+    
+    emotional_tracking:
+      enabled: true
+      resonance_calculation: "weighted_keyword"
+      decay_rate: 0.1
+      
+      soul_anchors:
+        enabled: true
+        keywords: ["life_pillar", "core_belief"]
+        weight_multiplier: 1.5
+        
+      keyword_weights:
+        emotional:
+          love: 0.8
+          care: 0.7
+          happy: 0.5
+          
+        breakthrough:
+          breakthrough: 0.9
+          achievement: 0.8
+    
+    archive:
+      daily_files: true
+      daily_pattern: "memory/YYYY-MM-DD.md"
+      
+      emotional_archive: true
+      emotional_pattern: "memory/emotion_memories/emotion_YYYYMMDD_HHMMSS.json"
+      
+      backup:
+        enabled: true
+        interval: "6h"
+        retention_days: 7
+        
+    integration:
+      openclaw:
+        enabled: true
+        auto_start: true
+
+# Environment variable references
+# Replace these with actual values or set as environment variables:
+# - ENTITY_NAME: Name of your AI entity
+# - WORKSPACE_PATH: Path to workspace directory
+# - WEBHOOK_SECRET: Secret for webhook authentication
+# - API_TOKEN: Token for API authentication
+# - ENCRYPTION_KEY_FILE: Path to encryption key file
+# - ADMIN_ENTITY: Name of admin entity
+# - SMTP_SERVER: SMTP server for email alerts
+# - ALERT_EMAIL: Email for alerts
+# - ALERT_WEBHOOK_URL: Webhook URL for alerts
+
+# Platform-specific examples:
+# 
+# Linux/macOS:
+#   export ENTITY_NAME="my_assistant"
+#   export WORKSPACE_PATH="$HOME/.aethermem"
+#   export TEMP_DIR="/tmp/aethermem"
+# 
+# Windows (Command Prompt):
+#   set ENTITY_NAME=my_assistant
+#   set WORKSPACE_PATH=%USERPROFILE%\.aethermem
+#   set TEMP_DIR=%TEMP%\aethermem
+# 
+# Windows (PowerShell):
+#   $env:ENTITY_NAME="my_assistant"
+#   $env:WORKSPACE_PATH="$env:USERPROFILE\.aethermem"
+#   $env:TEMP_DIR="$env:TEMP\aethermem"

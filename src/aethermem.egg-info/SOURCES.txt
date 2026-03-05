@@ -1,0 +1,11 @@
+LICENSE
+README.md
+pyproject.toml
+setup.py
+src/aethermem.egg-info/PKG-INFO
+src/aethermem.egg-info/SOURCES.txt
+src/aethermem.egg-info/dependency_links.txt
+src/aethermem.egg-info/entry_points.txt
+src/aethermem.egg-info/requires.txt
+src/aethermem.egg-info/top_level.txt
+src/api/__init__.py
